@@ -1,3 +1,6 @@
+import localStorage from './localStorage.js';
+console.log(localStorage);
+
 const switchTheme = document.querySelector('.js-switch-input');
 const body = document.querySelector('body');
 
@@ -22,40 +25,20 @@ function bodyColor(e) {
   }
 }
 
-const load = key => {
-  try {
-    const serializedState = localStorage.getItem(key);
-
-    return serializedState === null ? undefined : JSON.parse(serializedState);
-  } catch (err) {
-    console.error('Get state error: ', err);
-  }
-};
-
-const save = (key, value) => {
-  try {
-    const serializedState = JSON.stringify(value);
-    localStorage.setItem(key, serializedState);
-  } catch (err) {
-    console.error('Set state error: ', err);
-  }
-};
-
-export default { load, save };
-
 switchTheme.addEventListener('change', handleChange)
 
-let isChecked = localStorage.getItem('Theme');
+let isChecked = localStorage.load('Theme');
 isChecked = JSON.parse(isChecked);
 console.log('isChecked', isChecked);
 
 if (isChecked) {
-    body.classList.add(Theme.DARK);
+  body.classList.add(Theme.DARK);
+  switchTheme.checked = isChecked;
 }
 
 function handleChange(e) {
     const isChecked = e.target.checked;
     // console.log(isChecked);
 
-    save('Theme', isChecked);
+    localStorage.save('Theme', isChecked);
 }
